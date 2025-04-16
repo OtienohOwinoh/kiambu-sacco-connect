@@ -9,7 +9,341 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      announcements: {
+        Row: {
+          content: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          priority: string | null
+          published_date: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          priority?: string | null
+          published_date?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          priority?: string | null
+          published_date?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      deposits: {
+        Row: {
+          amount: number
+          confirmation_code: string | null
+          created_at: string
+          deposit_date: string
+          description: string | null
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          confirmation_code?: string | null
+          created_at?: string
+          deposit_date?: string
+          description?: string | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          confirmation_code?: string | null
+          created_at?: string
+          deposit_date?: string
+          description?: string | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deposits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dividends: {
+        Row: {
+          amount: number
+          created_at: string
+          declaration_date: string
+          id: string
+          payment_date: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          year: number
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          declaration_date: string
+          id?: string
+          payment_date?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          year: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          declaration_date?: string
+          id?: string
+          payment_date?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dividends_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_performance: {
+        Row: {
+          created_at: string
+          id: string
+          net_income: number | null
+          quarter: number
+          total_assets: number | null
+          total_equity: number | null
+          total_expenses: number | null
+          total_liabilities: number | null
+          total_revenue: number | null
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          net_income?: number | null
+          quarter: number
+          total_assets?: number | null
+          total_equity?: number | null
+          total_expenses?: number | null
+          total_liabilities?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          net_income?: number | null
+          quarter?: number
+          total_assets?: number | null
+          total_equity?: number | null
+          total_expenses?: number | null
+          total_liabilities?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
+      loan_guarantors: {
+        Row: {
+          created_at: string
+          guarantor_id: string
+          id: string
+          loan_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          guarantor_id: string
+          id?: string
+          loan_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          guarantor_id?: string
+          id?: string
+          loan_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loan_guarantors_guarantor_id_fkey"
+            columns: ["guarantor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loan_guarantors_loan_id_fkey"
+            columns: ["loan_id"]
+            isOneToOne: false
+            referencedRelation: "loans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      loan_repayments: {
+        Row: {
+          amount: number
+          created_at: string
+          due_date: string
+          id: string
+          loan_id: string
+          paid_date: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          due_date: string
+          id?: string
+          loan_id: string
+          paid_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          due_date?: string
+          id?: string
+          loan_id?: string
+          paid_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loan_repayments_loan_id_fkey"
+            columns: ["loan_id"]
+            isOneToOne: false
+            referencedRelation: "loans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      loans: {
+        Row: {
+          amount: number
+          application_date: string
+          approval_date: string | null
+          completion_date: string | null
+          created_at: string
+          disbursement_date: string | null
+          id: string
+          interest_rate: number
+          purpose: string | null
+          status: string
+          term_months: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          application_date?: string
+          approval_date?: string | null
+          completion_date?: string | null
+          created_at?: string
+          disbursement_date?: string | null
+          id?: string
+          interest_rate: number
+          purpose?: string | null
+          status?: string
+          term_months: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          application_date?: string
+          approval_date?: string | null
+          completion_date?: string | null
+          created_at?: string
+          disbursement_date?: string | null
+          id?: string
+          interest_rate?: number
+          purpose?: string | null
+          status?: string
+          term_months?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loans_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          id_number: string | null
+          kra_pin: string | null
+          membership_number: string | null
+          name: string
+          phone_number: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          id_number?: string | null
+          kra_pin?: string | null
+          membership_number?: string | null
+          name: string
+          phone_number?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          id_number?: string | null
+          kra_pin?: string | null
+          membership_number?: string | null
+          name?: string
+          phone_number?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
