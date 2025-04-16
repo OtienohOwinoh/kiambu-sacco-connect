@@ -9,3 +9,19 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+// Helper function to get current auth session
+export const getSession = async () => {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) {
+    console.error('Error getting session:', error);
+    return null;
+  }
+  return data.session;
+};
+
+// Helper function to get current user
+export const getCurrentUser = async () => {
+  const session = await getSession();
+  return session?.user || null;
+};
