@@ -71,6 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           description: `Welcome back, ${response.user.name}!`,
         });
         
+        console.log("Login successful, user set:", response.user);
         return true;
       } else {
         toast({

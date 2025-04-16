@@ -47,7 +47,8 @@ const Login = () => {
       const success = await login(email, password);
       
       if (success) {
-        navigate("/");
+        // Change this line to redirect to dashboard instead of root
+        navigate("/dashboard");
       }
     } finally {
       setIsSubmitting(false);

@@ -1,6 +1,6 @@
 
-import React from "react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { SidebarNav } from "./SidebarNav";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -9,6 +9,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function AppLayout() {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Log authentication status for debugging
+  useEffect(() => {
+    console.log("Auth status in AppLayout:", { isAuthenticated, isLoading });
+  }, [isAuthenticated, isLoading]);
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -17,6 +23,7 @@ export function AppLayout() {
 
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
+    console.log("Not authenticated, redirecting to login");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
