@@ -1,12 +1,13 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarGroupContent,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -20,15 +21,28 @@ import {
   LogOut,
   Bell,
   HelpCircle,
+  User,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface SidebarNavProps {
   isMobile?: boolean;
 }
 
 export function SidebarNav({ isMobile }: SidebarNavProps) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    navigate("/");
+  };
 
   const NavItem = ({
     href,
@@ -68,7 +82,7 @@ export function SidebarNav({ isMobile }: SidebarNavProps) {
       </SidebarHeader>
       <SidebarContent className="px-4">
         <div className="space-y-1 py-2">
-          <NavItem href="/" icon={Home}>
+          <NavItem href="/dashboard" icon={Home}>
             Dashboard
           </NavItem>
           <NavItem href="/deposits" icon={PiggyBank}>
@@ -86,19 +100,30 @@ export function SidebarNav({ isMobile }: SidebarNavProps) {
           <NavItem href="/notifications" icon={Bell}>
             Notifications
           </NavItem>
-          <NavItem href="/help" icon={HelpCircle}>
-            Help & Support
-          </NavItem>
           <NavItem href="/settings" icon={Settings}>
             Settings
           </NavItem>
+          <NavItem href="/help" icon={HelpCircle}>
+            Help & Support
+          </NavItem>
         </div>
       </SidebarContent>
-      <SidebarFooter className="px-4 py-4">
+      <SidebarFooter className="px-4 py-4 space-y-4">
+        {user && (
+          <div className="flex items-center gap-3 px-3 py-2">
+            <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
+              <User className="h-4 w-4 text-primary" />
+            </div>
+            <div className="overflow-hidden">
+              <p className="font-medium text-sm truncate">{user.name}</p>
+              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            </div>
+          </div>
+        )}
         <Button
           variant="ghost"
           className="w-full flex items-center justify-start gap-3 text-red-500 hover:text-red-600 hover:bg-red-50"
-          onClick={logout}
+          onClick={handleLogout}
         >
           <LogOut className="h-4 w-4" />
           <span>Logout</span>
